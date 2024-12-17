@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Teacher Rating</title>
+     {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/filter.css' %}">
+
+</head>
+<body>
+
+    <header>
+     
+        <section id="header-section">
+
+            <nav class="navbar navbar-light ">
+                <!-- Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand ms-6 text-white" href="{% url 'Home' %}">TechRate</a>
+                <!-- Sidebar -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <!-- Sidebar Header -->
+                  <div class="sidebar-header">
+                    <h5>Teacher Rating</h5>
+                    <button class="close-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Close navigation">&times;</button>
+                  </div>
+                  <!-- Sidebar Navigation Items -->
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link " href="{% url 'Home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'teacher_list' %}">Top Rated</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'filter_teachers' %}">Rating</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">About Us</a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+           </section>
+<br><br><br>
+</header>
+
+<div class="container ">
+    <h1 class="text-center reading">Rate your Teacher</h1>
+
+    <!-- Filter Form -->
+    <form method="get" action="{% url 'filter_teachers' %}" class="mb-4">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="university">University:</label>
+                <select name="university" id="university" class="form-control">
+                    <option value="">-- Select University --</option>
+                    {% for uni in universities %}
+                        <option value="{{ uni.name }}" {% if request.GET.university == uni.name %}selected{% endif %}>
+                            {{ uni.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="department">Department:</label>
+                <select name="department" id="department" class="form-control">
+                    <option value="">-- Select Department --</option>
+                    {% for dept in departments %}
+                        <option value="{{ dept.name }}" {% if request.GET.department == dept.name %}selected{% endif %}>
+                            {{ dept.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn filter-button">Filter</button>
+    </form>
+
+    <!-- Teachers List -->
+    <div >
+        <div>
+            <div class="teacher-list">
+                {% for teacher in teachers %}
+                    <div class="teacher-profile">
+                        <img src="{{ teacher.profile_picture.url }}" alt="{{ teacher.name }}" class="teacher-picture">
+                        <h3 class="teacher-name text-center">{{ teacher.name }}</h3>
+                        <p class="university-name">University: {{ teacher.university.name }}</p>
+                        <p class="department-name">Department: {{ teacher.department.name }}</p>
+                        <p class="rating">Average Rating: {{ teacher.average_rating|default:"No ratings yet" }}</p>
+            
+                        <!-- Rating Form -->
+                        <form method="POST" action="{% url 'filter_teachers' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="teacher" value="{{ teacher.id }}">
+                            {{ form.rating }}
+                            <button type="submit" class="rating-button">Submit</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+            </div>
+            
+        </div>
+        
+        
+      
+    </div>
+</div>
+<footer class="footer-section ">
+
+    <p>All Rights Reserved @ Team Alpha</p>
+
+
+</footer>
+
+<!-- Add JavaScript for AJAX -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const rateButtons = document.querySelectorAll('.rate-btn');
+
+        rateButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const teacherId = button.getAttribute('data-teacher-id');
+                const rating = document.getElementById(`rating-${teacherId}`).value;
+
+                fetch(`/rate/${teacherId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `rating=${rating}`,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`average-rating-${teacherId}`).innerText = data.average_rating;
+                        alert('Thank you for your rating!');
+                    } else {
+                        alert('Failed to submit rating. Please try again.');
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
