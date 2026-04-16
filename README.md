@@ -28,24 +28,24 @@ Before you begin, ensure you have the following installed:
 
 # ⚙️ Installation & Setup
 
-1. Clone the repository:**
+1. Clone the repository:
    ```bash
    git clone <repository-url>
    cd TeachRate-main
    ```
 
-2. Create a virtual environment (optional but recommended):**
+2. Create a virtual environment (optional but recommended):
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install dependencies:**
+3. Install dependencies:
    ```bash
    pip install django mysqlclient
    ```
 
-4. Database Configuration:**
+4. Database Configuration:
    - Create a MySQL database named `Teacher_Rating`.
    - Update the `DATABASES` setting in `User/settings.py` with your MySQL credentials:
      ```python
@@ -66,12 +66,12 @@ Before you begin, ensure you have the following installed:
    python manage.py migrate
    ```
 
-6. Create a superuser (to access the admin panel):**
+6. Create a superuser (to access the admin panel):
    ```bash
    python manage.py createsuperuser
    ```
 
-7. Run the development server:**
+7. Run the development server:
    ```bash
    python manage.py runserver
    ```
