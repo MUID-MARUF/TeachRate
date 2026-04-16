@@ -4,12 +4,12 @@ TeachRate is a professional web application designed to facilitate student feedb
 
 # 🚀 Features
 
-- Teacher Profiles**: Comprehensive profiles for faculty members including designation, department, and university affiliation.
-- Rating System**: Integrated 1-5 star rating system for students to provide feedback.
-- Dynamic Search & Filter**: Easily find teachers by university or department.
-- Average Rating Calculation**: Automatic calculation of faculty ratings to provide a quick overview of performance.
-- User Authentication**: Secure sign-up and sign-in functionality for students.
-- Media Management**: Centralized handling of teacher profile pictures.
+- Teacher Profiles: Comprehensive profiles for faculty members including designation, department, and university affiliation.
+- Rating System: Integrated 1-5 star rating system for students to provide feedback.
+- Dynamic Search & Filter: Easily find teachers by university or department.
+- Average Rating Calculation: Automatic calculation of faculty ratings to provide a quick overview of performance.
+- User Authentication: Secure sign-up and sign-in functionality for students.
+- Media Management: Centralized handling of teacher profile pictures.
 
 # 🛠️ Tech Stack
 
